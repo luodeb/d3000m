@@ -1,0 +1,3 @@
+[submodule "axplat-aarch64-d3000m-n80-laptop"]
+	path = axplat-aarch64-d3000m-n80-laptop
+	url = https://github.com/kylin-x-kernel/axplat-aarch64-d3000m-n80-laptop.git
