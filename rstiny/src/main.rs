@@ -43,17 +43,21 @@ fn uart_puts(s: &str) {
 #[axplat::main]
 pub fn rust_main(cpu_id: usize, arg: usize) -> ! {
     utils::mem::clear_bss();
-    init_kernel(cpu_id, arg);
 
-    axplat::console_println!("Hello, RSTiny!");
+    uart_puts("Hello, RSTiny World JUHGJHG!\n");
 
-    utils::logging::log_init();
+    loop {}
+    // init_kernel(cpu_id, arg);
 
-    info!("Logging initialized. This is an info message.");
+    // axplat::console_println!("Hello, RSTiny!");
 
-    test::run_allocator_tests();
+    // utils::logging::log_init();
 
-    axplat::power::system_off()
+    // info!("Logging initialized. This is an info message.");
+
+    // test::run_allocator_tests();
+
+    // axplat::power::system_off()
 }
 
 #[cfg(all(target_os = "none", not(test)))]
