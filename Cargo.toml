@@ -1,0 +1,24 @@
+[workspace]
+resolver = "2"
+
+members = ["axplat-aarch64-d3000m-n80-laptop", "rstiny"]
+
+[workspace.package]
+version = "0.2.0"
+edition = "2024"
+authors = ["Debin Luo <luodeb@outlook.com>"]
+license = "GPL-3.0-or-later OR Apache-2.0 OR MulanPSL-2.0"
+homepage = "https://github.com/kylin-x-kernel/axplat-d3000m-n80-laptop"
+documentation = "https://kylin-x-kernel.github.io/axplat-d3000m-n80-laptop"
+repository = "https://github.com/kylin-x-kernel/axplat-d3000m-n80-laptop"
+keywords = ["arceos", "kernel"]
+categories = ["os", "no-std"]
+
+[workspace.dependencies]
+axplat-aarch64-d3000m-n80-laptop = { path = "axplat-aarch64-d3000m-n80-laptop" }
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
