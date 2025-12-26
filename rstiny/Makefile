@@ -23,13 +23,13 @@ CARGO_FLAGS = $(MODE_ARG) --target $(TARGET)
 # 默认目标
 all: build
 
-wrapper: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
+../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin: 
 	@echo "Preparing EFI wrapper..."
 	aarch64-linux-musl-gcc -c ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.S -o ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.o
 	aarch64-linux-musl-objcopy -O binary ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.o ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
 
 # 编译项目
-build: wrapper
+build: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
 	@echo "Building $(PROJECT_NAME) with integrated EFI wrapper..."
 	cargo build $(CARGO_FLAGS)
 	@echo "Build completed: $(kernel_elf)"
