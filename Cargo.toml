@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 
-members = ["axplat-aarch64-d3000m-n80-laptop", "rstiny"]
+members = ["axplat-aarch64-d3000m-n80-laptop", "rstiny", "arceos-shell"]
 
 [workspace.package]
 version = "0.2.0"

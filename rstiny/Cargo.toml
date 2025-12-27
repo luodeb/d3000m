@@ -10,4 +10,5 @@ talc = "4.4.3"
 axplat-aarch64-d3000m-n80-laptop = { workspace = true,features = [] }
 axplat = "0.3.0"
 spin = "0.10.0"
-
+lazy_static = {version = "1.5.0", features = ["spin_no_std"]}
+volatile = "0.6.1"

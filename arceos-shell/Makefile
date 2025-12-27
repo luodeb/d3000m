@@ -1,12 +1,12 @@
-# ARM RSTiny - Rust Bare Metal OS Makefile
+# Arceos Shell Makefile
 
-# 项目配置
-PROJECT_NAME = rstiny
+PROJECT_NAME = arceos-shell
 
-TOOL_PATH = ../tools/orangepi5
+TOOL_PATH = $(PWD)/tools/orangepi5
+PLAT_NAME = axplat-aarch64-d3000m-n80-laptop
+PLAT_CONFIG = $(PWD)/axplat-aarch64-d3000m-n80-laptop/axconfig.toml
 
-kernel_elf = ../target/$(TARGET)/$(MODE)/$(PROJECT_NAME)
-wrapper_bin = wrapper.bin
+kernel_elf = $(PWD)/target/$(TARGET)/$(MODE)/$(PROJECT_NAME)
 kernel_bin = $(kernel_elf).bin
 kernel_img = $(kernel_elf).img
 kernel_uimg = $(kernel_elf).uimg
@@ -17,11 +17,32 @@ ifeq ($(MODE), release)
 	MODE_ARG := --release
 endif
 
+FEATURE_FLAGS = "axstd/myplat axstd/log-level-warn axstd/bus-mmio axstd/page-alloc-4g axstd/driver-ramdisk axstd/smp"
+
 # 编译选项
-CARGO_FLAGS = $(MODE_ARG) --target $(TARGET)
+CARGO_FLAGS = $(MODE_ARG) --target $(TARGET) --features $(FEATURE_FLAGS)
+
+OUT_CONFIG = $(PWD)/.axconfig.toml
+
+CONFIG_ARGS := \
+  $(PWD)/$(APP)/defconfig.toml $(PLAT_CONFIG) \
+  -w 'arch="$(ARCH)"' \
+  -w 'platform="$(PLAT_NAME)"' \
+  -o "$(OUT_CONFIG)"
+
+export AX_ARCH = $(ARCH)
+export AX_PLATFORM = $(PLAT_NAME)
+export AX_MODE=$(MODE)
+export AX_LOG=$(LOG)
+export AX_TARGET=$(TARGET)
+export AX_CONFIG_PATH=$(OUT_CONFIG)
 
 # 默认目标
 all: build
+
+$(OUT_CONFIG): 
+	echo "Generating configuration file at $(OUT_CONFIG)..."
+	axconfig-gen $(CONFIG_ARGS)
 
 ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin: 
 	@echo "Preparing EFI wrapper..."
@@ -29,20 +50,19 @@ all: build
 	aarch64-linux-musl-objcopy -O binary ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.o ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
 
 # 编译项目
-build: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
-	@echo "Building $(PROJECT_NAME) with integrated EFI wrapper..."
+build: $(OUT_CONFIG) ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
+	@echo "Building $(PROJECT_NAME)..."
 	cargo build $(CARGO_FLAGS)
 	@echo "Build completed: $(kernel_elf)"
 	
-	@echo "Generating $(kernel_bin) (includes EFI wrapper)..."
-	@rust-objcopy --binary-architecture=aarch64 -O binary $(kernel_elf) $(kernel_bin)
+	@echo "Generating $(kernel_bin)..."
+	@rust-objcopy -O binary $(kernel_elf) $(kernel_bin)
 
 	@echo "Dump $(kernel_asm)"
 	@rust-objdump -d --print-imm-hex $(kernel_elf) > $(kernel_asm)
 
 	@echo "Generating $(kernel_uimg)..."
 	@mkimage -A arm64 -O linux -T kernel -C none -a 0x400000 -e 0x4000000 -n "$(PROJECT_NAME)" -d $(kernel_bin) $(kernel_uimg)
-	@echo "Build completed. The kernel binary now includes EFI wrapper support."
 
 	@echo "Generating $(kernel_linux)..."
 	@cat ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin $(kernel_bin) > $(kernel_linux)
