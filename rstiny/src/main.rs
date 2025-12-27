@@ -11,6 +11,7 @@ extern crate axplat_aarch64_d3000m_n80_laptop;
 mod config;
 mod utils;
 mod vga;
+// mod vga;
 mod test;
 
 fn init_kernel(cpu_id: usize, arg: usize) {
@@ -42,16 +43,19 @@ fn uart_puts(s: &str) {
 
 #[axplat::main]
 pub fn rust_main(cpu_id: usize, arg: usize) -> ! {
-    utils::mem::clear_bss();
-    init_kernel(cpu_id, arg);
+    // utils::mem::clear_bss();
+    // init_kernel(cpu_id, arg);
 
-    uart_puts("Hello, RSTiny World wseirfhw!\n");
+    // uart_puts("Hello, RSTiny World wseirfhw!\n");
 
     // axplat::console_println!("Hello, RSTiny!");
 
-    uart_puts("Hello, RSTiny World 12342342!\n");
+    // uart_puts("Hello, RSTiny World 12342342!\n");
 
-    vga::print_hello_world();
+    vga::show_img();
+
+
+    // vga::print_hello_world();
 
     loop {}
     // init_kernel(cpu_id, arg);

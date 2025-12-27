@@ -49,4 +49,4 @@ build: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
 
 tftp: $(kernel_linux)
 	@echo "Copy $(PROJECT_NAME) to TFTP directory..."
-	scp $(kernel_linux) greatwall@10.88.21.33:/tftpboot/arceos_linux.bin
+	scp $(kernel_linux) greatwall@10.88.21.33:/tftpboot/arceos_debin.bin
