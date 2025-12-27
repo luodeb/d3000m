@@ -806,6 +806,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "font8x8"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "875488b8711a968268c7cf5d139578713097ca4635a76044e8fe8eedf831d07e"
+
+[[package]]
 name = "handler_table"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1163,7 +1169,10 @@ dependencies = [
  "axplat-aarch64-d3000m-n80-laptop",
  "embedded-graphics",
  "embedded-graphics-core",
+ "font8x8",
+ "kspin",
  "lazy_static",
+ "lazyinit",
  "log",
  "spin 0.10.0",
  "talc",

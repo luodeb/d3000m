@@ -42,7 +42,7 @@ fn uart_puts(s: &str) {
 }
 
 #[axplat::main]
-pub fn rust_main(cpu_id: usize, arg: usize) -> ! {
+pub fn rust_main(_cpu_id: usize, _arg: usize) -> ! {
     // utils::mem::clear_bss();
     // init_kernel(cpu_id, arg);
 
@@ -52,12 +52,14 @@ pub fn rust_main(cpu_id: usize, arg: usize) -> ! {
 
     // uart_puts("Hello, RSTiny World 12342342!\n");
 
-    vga::show_img();
+    // 初始化 VGA framebuffer
+    // vga::init();
+    
+    // 启动图形显示
+    vga::show_img()
 
 
     // vga::print_hello_world();
-
-    loop {}
     // init_kernel(cpu_id, arg);
 
     // axplat::console_println!("Hello, RSTiny!");
