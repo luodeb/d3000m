@@ -12,6 +12,7 @@ mod config;
 mod utils;
 
 mod test;
+mod vga;
 
 fn init_kernel(cpu_id: usize, arg: usize) {
     // Initialize trap, console, time.
@@ -45,6 +46,12 @@ pub fn rust_main(cpu_id: usize, arg: usize) -> ! {
     utils::mem::clear_bss();
 
     uart_puts("Hello, RSTiny World JUHGJHG!\n");
+
+    vga::draw_string("Hello Arceos!");
+
+    uart_puts("Hello, RSTiny World Second!\n");
+
+     vga::draw_string("Hello Arceos!");
 
     loop {}
     // init_kernel(cpu_id, arg);

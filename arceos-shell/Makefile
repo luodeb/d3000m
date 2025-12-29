@@ -1,27 +1,47 @@
-# ARM RSTiny - Rust Bare Metal OS Makefile
+# Arceos Shell Makefile
 
-# 项目配置
-PROJECT_NAME = rstiny
+PROJECT_NAME = arceos-shell
 
-TOOL_PATH = ../tools/orangepi5
+PLAT_NAME = axplat-aarch64-d3000m-n80-laptop
+PLAT_CONFIG = $(PWD)/axplat-aarch64-d3000m-n80-laptop/axconfig.toml
 
-kernel_elf = ../target/$(TARGET)/$(MODE)/$(PROJECT_NAME)
-wrapper_bin = wrapper.bin
+kernel_elf = $(PWD)/target/$(TARGET)/$(MODE)/$(PROJECT_NAME)
 kernel_bin = $(kernel_elf).bin
 kernel_img = $(kernel_elf).img
 kernel_uimg = $(kernel_elf).uimg
 kernel_asm = $(kernel_elf)_asm.txt
-kernel_linux = $(kernel_elf)_linux.bin
+kernel_linux = $(PWD)/$(PROJECT_NAME)_linux.bin
 
 ifeq ($(MODE), release)
 	MODE_ARG := --release
 endif
 
+FEATURE_FLAGS = "axstd/myplat axstd/log-level-trace axstd/bus-mmio axstd/page-alloc-4g axstd/driver-ramdisk"
+
 # 编译选项
-CARGO_FLAGS = $(MODE_ARG) --target $(TARGET)
+CARGO_FLAGS = $(MODE_ARG) --target $(TARGET) --features $(FEATURE_FLAGS)
+
+OUT_CONFIG = $(PWD)/.axconfig.toml
+
+CONFIG_ARGS := \
+  $(PWD)/$(APP)/defconfig.toml $(PLAT_CONFIG) \
+  -w 'arch="$(ARCH)"' \
+  -w 'platform="$(PLAT_NAME)"' \
+  -o "$(OUT_CONFIG)"
+
+export AX_ARCH = $(ARCH)
+export AX_PLATFORM = $(PLAT_NAME)
+export AX_MODE=$(MODE)
+export AX_LOG=$(LOG)
+export AX_TARGET=$(TARGET)
+export AX_CONFIG_PATH=$(OUT_CONFIG)
 
 # 默认目标
 all: build
+
+$(OUT_CONFIG): 
+	echo "Generating configuration file at $(OUT_CONFIG)..."
+	axconfig-gen $(CONFIG_ARGS)
 
 ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.S
 	@echo "Preparing EFI wrapper..."
@@ -29,7 +49,7 @@ all: build
 	aarch64-linux-musl-objcopy -O binary ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.o ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
 
 # 编译项目
-build: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
+build: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin $(OUT_CONFIG)
 	@echo "Building $(PROJECT_NAME) with integrated EFI wrapper..."
 	cargo build $(CARGO_FLAGS)
 	@echo "Build completed: $(kernel_elf)"
@@ -43,14 +63,6 @@ build: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
 	@echo "Generating $(kernel_linux)..."
 	@cat ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin $(kernel_bin) > $(kernel_linux)
 
-img: build
-	@echo "Make $(PROJECT_NAME) on Orange Pi 5..."
-	sudo bash $(TOOL_PATH)/make_boot.sh $(kernel_bin) $(kernel_img)
-
-flash: $(kernel_bin)
-	@echo "Flash $(PROJECT_NAME) to Orange Pi 5..."
-	sudo bash $(TOOL_PATH)/make_flash.sh uimg=$(kernel_bin)
-
 tftp: $(kernel_bin)
 	@echo "Copy $(PROJECT_NAME) to TFTP directory..."
-	scp $(kernel_linux) greatwall@10.88.21.33:/tftpboot/arceos_debin.bin
+	scp $(kernel_linux) greatwall@10.88.21.33:/tftpboot/arceos_linux.bin
