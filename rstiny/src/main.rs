@@ -22,7 +22,7 @@ fn init_kernel(cpu_id: usize, arg: usize) {
 }
 
 // UART0 基地址 (QEMU virt 机器)
-const UART0_BASE: usize = 0x18002000;
+const UART0_BASE: usize = 0xffff000018002000;
 // const UART0_BASE: usize = 0x09000000;
 
 /// 向 UART 写入一个字符
