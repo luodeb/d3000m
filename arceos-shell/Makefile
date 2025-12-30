@@ -43,13 +43,9 @@ $(OUT_CONFIG):
 	echo "Generating configuration file at $(OUT_CONFIG)..."
 	axconfig-gen $(CONFIG_ARGS)
 
-../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.S
-	@echo "Preparing EFI wrapper..."
-	aarch64-linux-musl-gcc -c ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.S -o ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.o
-	aarch64-linux-musl-objcopy -O binary ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.o ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin
 
 # 编译项目
-build: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin $(OUT_CONFIG)
+build:  $(OUT_CONFIG)
 	@echo "Building $(PROJECT_NAME) with integrated EFI wrapper..."
 	cargo build $(CARGO_FLAGS)
 	@echo "Build completed: $(kernel_elf)"
@@ -59,9 +55,6 @@ build: ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin $(OUT_CONFIG)
 
 	@echo "Dump $(kernel_asm)"
 	@rust-objdump -d --print-imm-hex $(kernel_elf) > $(kernel_asm)
-
-	@echo "Generating $(kernel_linux)..."
-	@cat ../axplat-aarch64-d3000m-n80-laptop/tools/wrapper.bin $(kernel_bin) > $(kernel_linux)
 
 tftp: $(kernel_bin)
 	@echo "Copy $(PROJECT_NAME) to TFTP directory..."

@@ -58,9 +58,9 @@ kernel-aspace-base = "0xffff_0000_0000_0000" # uint
 # Kernel address space size.
 kernel-aspace-size = "0x0000_ffff_ffff_f000" # uint
 # Base physical address of the kernel image.
-kernel-base-paddr = 0x8000_0000 # uint
+kernel-base-paddr = 0xf026_2000 # uint
 # Base virtual address of the kernel image.
-kernel-base-vaddr = "0xffff_0000_8000_0000" # uint
+kernel-base-vaddr = "0xffff_0000_f026_2000" # uint
 # Maximum number of CPUs. For platforms that do not support runtime CPU number
 # detection, it's also the number of CPUs to boot.
 max-cpu-num = 1 # uint
