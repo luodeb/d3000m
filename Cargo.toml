@@ -16,6 +16,29 @@ categories = ["os", "no-std"]
 
 [workspace.dependencies]
 axplat-aarch64-d3000m-n80-laptop = { path = "axplat-aarch64-d3000m-n80-laptop" }
+axstd = { path = "arceos/ulib/axstd" }
+axlibc = { path = "arceos/ulib/axlibc" }
+
+arceos_api = { path = "arceos/api/arceos_api" }
+arceos_posix_api = { path = "arceos/api/arceos_posix_api" }
+axfeat = { path = "arceos/api/axfeat" }
+
+axalloc = { path = "arceos/modules/axalloc" }
+axconfig = { path = "arceos/modules/axconfig" }
+axdisplay = { path = "arceos/modules/axdisplay" }
+axdriver = { path = "arceos/modules/axdriver" }
+axfs = { path = "arceos/modules/axfs" }
+axhal = { path = "arceos/modules/axhal" }
+axlog = { path = "arceos/modules/axlog" }
+axmm = { path = "arceos/modules/axmm" }
+axnet = { path = "arceos/modules/axnet" }
+axns = { path = "arceos/modules/axns" }
+axruntime = { path = "arceos/modules/axruntime" }
+axsync = { path = "arceos/modules/axsync" }
+axtask = { path = "arceos/modules/axtask" }
+axdma = { path = "arceos/modules/axdma" }
+axipi = { path = "arceos/modules/axipi" }
+
 
 [profile.dev]
 panic = "abort"

@@ -58,4 +58,5 @@ build:  $(OUT_CONFIG)
 
 tftp: $(kernel_bin)
 	@echo "Copy $(PROJECT_NAME) to TFTP directory..."
-	scp $(kernel_linux) greatwall@10.88.21.33:/tftpboot/arceos_linux.bin
+	cp $(kernel_bin) arceos.bin
+	xtool tftpd .
