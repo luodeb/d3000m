@@ -43,7 +43,6 @@ $(OUT_CONFIG):
 	echo "Generating configuration file at $(OUT_CONFIG)..."
 	axconfig-gen $(CONFIG_ARGS)
 
-
 # 编译项目
 build:  $(OUT_CONFIG)
 	@echo "Building $(PROJECT_NAME) with integrated EFI wrapper..."
