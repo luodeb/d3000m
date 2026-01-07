@@ -14,6 +14,7 @@ use-ramfs = [
     "dep:axfs_ramfs",
     "dep:crate_interface",
 ]
+irq = ["axplat-aarch64-d3000m-n80-laptop/irq", "axstd/irq"]
 default = ["axstd", "use-ramfs"]
 
 [dependencies]
@@ -24,7 +25,6 @@ axstd = { git = "https://github.com/arceos-org/arceos.git", features = [
     "myplat",
     "alloc",
     "fs",
-    "irq",
     "bus-mmio"
 ], optional = true }
-axplat-aarch64-d3000m-n80-laptop = { workspace = true, features = ["irq"] }
+axplat-aarch64-d3000m-n80-laptop = { workspace = true }
