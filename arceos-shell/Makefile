@@ -16,10 +16,8 @@ ifeq ($(MODE), release)
 	MODE_ARG := --release
 endif
 
-FEATURE_FLAGS = "axstd/myplat axstd/log-level-trace axstd/bus-mmio axstd/page-alloc-4g axstd/driver-ramdisk"
-
 # 编译选项
-CARGO_FLAGS = $(MODE_ARG) --target $(TARGET) --features $(FEATURE_FLAGS)
+CARGO_FLAGS = $(MODE_ARG) --target $(TARGET)
 
 OUT_CONFIG = $(PWD)/.axconfig.toml
 
@@ -55,7 +53,8 @@ build:  $(OUT_CONFIG)
 	@echo "Dump $(kernel_asm)"
 	@rust-objdump -d --print-imm-hex $(kernel_elf) > $(kernel_asm)
 
-tftp: $(kernel_bin)
 	@echo "Copy $(PROJECT_NAME) to TFTP directory..."
 	cp $(kernel_bin) arceos.bin
+
+tftp: $(kernel_bin)
 	xtool tftpd .

@@ -9,6 +9,7 @@ authors = ["Yuekai Jia <equation618@gmail.com>"]
 [features]
 use-ramfs = [
     "axstd/myfs",
+    "axstd/driver-ramdisk",
     "dep:axfs_vfs",
     "dep:axfs_ramfs",
     "dep:crate_interface",
@@ -20,7 +21,10 @@ axfs_vfs = { version = "0.1", optional = true }
 axfs_ramfs = { version = "0.1", optional = true }
 crate_interface = { version = "0.1", optional = true }
 axstd = { git = "https://github.com/arceos-org/arceos.git", features = [
+    "myplat",
     "alloc",
     "fs",
+    "irq",
+    "bus-mmio"
 ], optional = true }
-axplat-aarch64-d3000m-n80-laptop = { workspace = true, features = ["smp"] }
+axplat-aarch64-d3000m-n80-laptop = { workspace = true, features = ["irq"] }

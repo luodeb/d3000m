@@ -15,15 +15,17 @@ ticks-per-sec = 100 # uint
 #
 [devices]
 # GIC Distributor base address
-gicd-paddr = 0xfe600000 # uint
+gicd-paddr = 0x26800000 # uint
 # GICR Address of rk3588
-gicr-paddr = 0xfe680000 # uint
+gicr-paddr = 0x26860000 # uint
 # IPI interrupt num
 ipi-irq = 1 # uint
 # MMIO ranges with format (`base_paddr`, `size`).
 mmio-ranges = [
     [0x1800_2000, 0x1000],
-    [0xecd2_0000, 0x100_0000]
+    [0x2680_0000, 0x20000],
+    [0xecd2_0000, 0x100_0000],
+    [0x1000_0000, 0x1_0000]
 ] # [(uint, uint)]
 # End PCI bus number (`bus-range` property in device tree).
 pci-bus-end = 0xff # uint
@@ -31,6 +33,8 @@ pci-bus-end = 0xff # uint
 pci-ecam-base = 0x40_1000_0000 # uint
 # PCI device memory ranges (`ranges` property in device tree).
 pci-ranges = [] # [(uint, uint)]
+# PS2 Keyboard Address
+ps2-keyboard-paddr = 0x1000_0000 # uint
 # pl031@9010000 {
 #     clock-names = "apb_pclk";
 #     clocks = <0x8000>;
@@ -40,6 +44,8 @@ pci-ranges = [] # [(uint, uint)]
 # };
 # RTC (PL031) Address
 rtc-paddr = 0x901_0000 # uint
+# SimpleFB Address
+simplefb-paddr = 0xecd2_0000 # uint
 # Timer interrupt num (PPI, physical timer).
 timer-irq = 30 # uint
 # UART IRQ number (SPI, 1)
@@ -59,7 +65,7 @@ kernel-aspace-base = "0xffff_0000_0000_0000" # uint
 # Kernel address space size.
 kernel-aspace-size = "0x0000_ffff_ffff_f000" # uint
 # Base physical address of the kernel image.
-kernel-base-paddr = 0x8000_0000 # uint
+kernel-base-paddr = 0 # uint
 # Base virtual address of the kernel image.
 kernel-base-vaddr = "0xffff_0000_8000_0000" # uint
 # Maximum number of CPUs. For platforms that do not support runtime CPU number
